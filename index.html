@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이름 궁합 테스트</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background: url('제목 없음.png') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #e91e63; /* 진한 핑크색으로 변경 */
+        }
+        #name-container {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        #name-inputs {
+            max-width: 400px;
+        }
+        #name1, #name2 {
+            width: calc(100% - 20px);
+            padding: 10px;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        #result {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #e91e63; /* 진한 핑크색으로 변경 */
+        }
+        #loading {
+            font-size: 18px;
+            margin-top: 20px;
+            display: none;
+        }
+        button {
+            padding: 10px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function calculateCompatibility() {
+            const name1 = document.getElementById('name1').value;
+            const name2 = document.getElementById('name2').value;
+
+            if (!name1 || !name2) {
+                alert('두 개의 이름을 모두 입력하세요.');
+                return;
+            }
+
+            const loadingElement = document.getElementById('loading');
+            loadingElement.style.display = 'block';
+
+            setTimeout(() => {
+                const compatibility = calculateNameCompatibility(name1, name2);
+                displayResult(compatibility);
+                
+                loadingElement.style.display = 'none';
+            }, 3000);
+        }
+
+        function calculateNameCompatibility(name1, name2) {
+            const sum1 = name1.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+            const sum2 = name2.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+            const compatibility = Math.abs((sum1 - sum2) % 101);
+            return compatibility;
+        }
+
+        function displayResult(compatibility) {
+            const resultElement = document.getElementById('result');
+            resultElement.innerHTML = `이름 궁합: <span style="color: #e91e63;">${compatibility}%</span>`;
+        }
+    </script>
+</head>
+<body>
+    <h1>이름 궁합 테스트</h1>
+    
+    <div id="name-container">
+        <div id="name-inputs">
+            <label for="name1">첫 번째 이름: </label>
+            <input type="text" id="name1" placeholder="첫 번째 이름" required>
+            <br>
+            <label for="name2">두 번째 이름: </label>
+            <input type="text" id="name2" placeholder="두 번째 이름" required>
+            <br>
+            <button onclick="calculateCompatibility()">궁합 확인</button>
+            
+            <div id="loading">계산 중...</div>
+
+            <div id="result"></div>
+        </div>
+    </div>
+</body>
+</html>
